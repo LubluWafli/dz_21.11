@@ -1,6 +1,7 @@
 package com.example.dz_2111
 
 import android.Manifest
+import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
@@ -12,10 +13,12 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.NavigationUI
 import com.example.dz_2111.databinding.ActivityMainBinding
 import androidx.activity.result.contract.ActivityResultContracts
+import android.location.Location
+import android.location.LocationManager
+import androidx.annotation.RequiresPermission
 
-lateinit var binding: ActivityMainBinding
 class MainActivity : AppCompatActivity() {
-    private val locationPermission = Manifest.permission.ACCESS_FINE_LOCATION
+    lateinit var binding: ActivityMainBinding
     private val requestPermissionLauncher = registerForActivityResult(
         ActivityResultContracts.RequestPermission()
     ) { isGranted: Boolean ->
@@ -32,17 +35,21 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        setContentView(R.layout.activity_main)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         val navController = findNavController(R.id.navHostFragment)
         val bottomNav = binding.bottomNavigationView
         NavigationUI.setupWithNavController(bottomNav, navController)
+        bottomNav.setOnItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.mapsFragment -> {
+                    navController.navigate(R.id.mapsFragment)
+                    true
+                }
+                else -> false
+            }
+        }
         checkAndRequestLocationPermission()
-
     }
 
     private fun checkAndRequestLocationPermission() {

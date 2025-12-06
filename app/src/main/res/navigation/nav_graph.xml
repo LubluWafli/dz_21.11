@@ -3,10 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/mapsFragment">
+    app:startDestination="@id/mapsFragment2">
 
     <fragment
-        android:id="@+id/mapsFragment"
+        android:id="@+id/mapsFragment2"
         android:name="com.example.dz_2111.mapsFragment"
         android:label="fragment_maps"
         tools:layout="@layout/fragment_maps" />
